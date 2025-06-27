@@ -4,6 +4,7 @@ import { validateCache } from "./validateCache";
 const client = new MongoClient(process.env.MONGODB_URI!);
 
 export default async function () {
+  console.log("running the refresh script...");
   try {
     await client.connect();
     const db = client.db("metro");
@@ -16,4 +17,5 @@ export default async function () {
     console.error("Failed to refresh cache, original error: ", e);
     process.exit(1);
   }
+  console.log("script complete");
 }
