@@ -49,7 +49,7 @@ type CacheStatus = {
   lastUpdated: Date | null;
 };
 
-export async function validateCache(db: Db): Promise<CacheStatus> {
+async function validateCache(db: Db): Promise<CacheStatus> {
   const meta = db.collection(META_COLLECTION);
 
   const lastWeek = new Date();
@@ -106,7 +106,7 @@ async function fetchAndPersist(db: Db) {
 // when transforming, we will ignore many unnecessary properties, drastically reducing the size of objects
 // we store in mongo, this helps both with performance and keeping costs low
 // TODO: remove unnecessary properties not used in calculations like legislation
-export function transformData(data: StopSearchResponse): StopSearchData {
+function transformData(data: StopSearchResponse): StopSearchData {
   return {
     ageRange: data.age_range as StopSearchData["ageRange"],
     // officerDefinedEthnicity: data.officer_defined_ethnicity,
@@ -235,7 +235,7 @@ function calculateStatistics(data: StopSearchData[]) {
   return statistics;
 }
 
-export async function persist(db: Db, docs: StatisticDocument[]) {
+async function persist(db: Db, docs: StatisticDocument[]) {
   const dataCollection = db.collection<StatisticDocument>(DATA_COLLECTION);
   const meta = db.collection<MetaDocument>(META_COLLECTION);
 
@@ -289,12 +289,12 @@ export async function persist(db: Db, docs: StatisticDocument[]) {
   }
 }
 
-export type AvailableDatesResponse = {
+type AvailableDatesResponse = {
   date: string;
   "stop-and-search": string[];
 };
 
-export default async function getAvailableDates() {
+async function getAvailableDates() {
   const availableDates = await fetchAvailableDates();
   return filterData(availableDates);
 }
@@ -332,7 +332,7 @@ function filterData(availableDates: AvailableDatesResponse[]) {
   return dates;
 }
 
-export async function fetchStopSearchData(): Promise<StopSearchResponse[]> {
+async function fetchStopSearchData(): Promise<StopSearchResponse[]> {
   console.log("*** fetching fresh data ***");
   const availableDates = await getAvailableDates();
 
