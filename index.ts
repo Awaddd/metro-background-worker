@@ -338,7 +338,7 @@ async function fetchStopSearchData(): Promise<StopSearchResponse[]> {
 
   // temp limit all data to just 7 months
   console.time("fetchRecordsFromApi");
-  const data = await batchFetchData(availableDates.slice(0, 7), 10);
+  const data = await batchFetchData(availableDates, 10);
   console.timeEnd("fetchRecordsFromApi");
   return data;
 }
