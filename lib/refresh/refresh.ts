@@ -1,6 +1,8 @@
 import { MongoClient } from "mongodb";
 import { validateCache } from "./validateCache";
 
+console.log(`Mongo db uri (${process.env.MONGODB_URI})`);
+
 const client = new MongoClient(process.env.MONGODB_URI!);
 
 export default async function () {
