@@ -338,7 +338,7 @@ async function fetchStopSearchData(): Promise<StopSearchResponse[]> {
 
   // temp limit all data to just 7 months
   console.time("fetchRecordsFromApi");
-  const data = await batchFetchData(availableDates, 10);
+  const data = await batchFetchData(availableDates, 7);
   console.timeEnd("fetchRecordsFromApi");
   return data;
 }
@@ -366,10 +366,15 @@ async function fetchData(date: string): Promise<StopSearchResponse[]> {
 
   try {
     const response = await fetch(uri);
+    if (!response.ok) {
+      const errors = await response.text();
+      console.error("Response body", errors);
+      throw new Error(`Failed to fetch data at uri ${uri}`);
+    }
     const data = (await response.json()) as StopSearchResponse[];
     return data;
   } catch (e) {
-    console.error(`Failed to fetch data at uri ${uri}, original error: `, e);
+    console.error(e);
   }
   return [];
 }
